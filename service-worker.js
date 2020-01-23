@@ -1,4 +1,4 @@
-const CACHE_NAME = "infobola-v2";
+const CACHE_NAME = "infobola-v3";
 var urlsToCache = [
   "./",
   "./nav.html",
@@ -6,7 +6,6 @@ var urlsToCache = [
   "./manifest.json",
   "./service-worker.js",
   "./service-worker-register.js",
-  "./assets/jquery/jquery.min.js",
 
   "./pages/home.html",
   "./pages/about.html",
@@ -17,6 +16,8 @@ var urlsToCache = [
 
   "./assets/materialize/materialize.min.css",
   "./assets/materialize/materialize.min.js",
+  "./assets/materialize/deploy.css",
+  "./assets/materialize/font-materialize.woff2",
 
   "./assets/img/banner.jpg",
   "./assets/img/premier.png",
@@ -28,7 +29,10 @@ var urlsToCache = [
   "./assets/img/icon/icon-96x96.png",
 
   "./assets/js/nav.js",
-  "./assets/js/api.js"
+  "./assets/js/db.js",
+  "./assets/js/idb.js",
+  "./assets/js/api.js",
+  "./assets/jquery/jquery.min.js"
   
 ];
  
@@ -59,17 +63,42 @@ self.addEventListener("fetch", function(event) {
   );
 });
 
-    self.addEventListener("activate", function(event) {
-      event.waitUntil(
-        caches.keys().then(function(cacheNames) {
-          return Promise.all(
-            cacheNames.map(function(cacheName) {
-              if (cacheName != CACHE_NAME) {
-                console.log("ServiceWorker: cache " + cacheName + " dihapus");
-                return caches.delete(cacheName);
-              }
-            })
-          );
+self.addEventListener("activate", function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheName != CACHE_NAME) {
+            console.log("ServiceWorker: cache " + cacheName + " dihapus");
+            return caches.delete(cacheName);
+          }
         })
       );
-    });
+    })
+  );
+});
+
+// Notifikasi
+self.addEventListener('push', function(event) {
+	var body;
+
+	if (event.data) {
+		body = event.data.text();
+	} else {
+		body = 'Push message no payload';
+	}
+
+	var options = {
+		body: body,
+		icon: './assets/img/icon/icon-512x512.png',
+		vibrate: [100, 50, 100],
+		data: {
+			dateOfArrival: Date.now(),
+			primaryKey: 1
+		}
+	};
+
+	event.waitUntil(
+		self.registration.showNotification('Push Notification', options)
+	);
+});

@@ -6,6 +6,7 @@
   <meta name="description" content="My first PWA"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./assets/materialize/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="./assets/materialize/deploy.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#d24943"/>
 </head>
@@ -23,13 +24,15 @@
   <!-- Akhir Navigasi -->
   <div class="container" id="body-content"></div>
 
+  <script src="./service-worker-register.js"></script>
+  
   <script src="./assets/materialize/materialize.min.js"></script>
   <script src="./assets/jquery/jquery.min.js"></script>
   <script src="./assets/js/api.js"></script>
   <script src="./assets/js/nav.js"></script>
   <script src="./assets/js/idb.js"></script>
   <script src="./assets/js/db.js"></script>
-  <script src="./service-worker-register.js"></script>
+  
   
 </body>
 </html>
