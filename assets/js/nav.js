@@ -41,23 +41,24 @@ document.addEventListener("DOMContentLoaded", function() {
   loadPage(page);
 
   function loadPage(page) {
-    
-    if (page == "liga-premier") {
-      getTeams("2021")
-    } else if (page == "laliga") {
-      getTeams("2014")
-    } else if (page == "bundesliga") {
-      getTeams("2002")
-    } else if (page == "favorit") {
-      showTimFavorit();
-    }
-
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4) {
         var content = document.querySelector("#body-content");
         if (this.status == 200) {
-          content.innerHTML = xhttp.responseText;
+        	
+        	content.innerHTML = xhttp.responseText;
+        	
+        	if (page == "liga-premier") {
+		      getTeams("2021")
+	    	} else if (page == "laliga") {
+		      getTeams("2014")
+		    } else if (page == "bundesliga") {
+		      getTeams("2002")
+		    } else if (page == "favorit") {
+		      showTimFavorit();
+		    }
+
         } else if (this.status == 404) {
           content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
         } else {

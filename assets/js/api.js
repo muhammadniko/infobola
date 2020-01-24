@@ -35,6 +35,39 @@ function getTeams(team_id) {
 
   let api = url + team_id + '/standings'
   
+  if ("caches" in window) {
+    caches.match(api).then(function(response) {
+      if (response) {
+        response.json().then(function(data) {
+          let klasemenCacheHTML = "";
+          data.standings[0].table.forEach(function(item) {
+            klasemenCacheHTML += `
+              <div class="card-panel grey lighten-5 z-depth-1">
+                <div class="row valign-wrapper">
+                  <div class="col s4">
+                    <img src="${item.team.crestUrl}" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+                  </div>
+                  <div class="col s10">
+                    <span class="black-text">
+                      <h5>${item.team.name}</h5>
+                      Played Games : ${item.playedGames}</br>
+                      Win : ${item.won}</br>
+                      Draw : ${item.draw}</br>
+                      Lost : ${item.lost}</br>
+                    </span>
+                    <a href="#" data-id="${item.team.id}" data-url="${item.team.crestUrl.replace(/^http:\/\//i, 'https://')}" data-name="${item.team.name}" class="starred">Add to Favorite</a>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          // Sisipkan komponen card ke dalam elemen dengan id #content
+          document.getElementById("timKlasemen").innerHTML = klasemenCacheHTML;
+        });
+      }
+    });
+  }
+
   fetch(api, options)
     .then(status)
     .then(json)
@@ -98,7 +131,7 @@ function showTimFavorit() {
     
     console.log(favorit);
     var favHTML = "";
-    
+
     favorit.forEach(function(favorit) {
       favHTML += `
         <div class="card-panel grey lighten-5 z-depth-1" id="team-${favorit.team_id}">
