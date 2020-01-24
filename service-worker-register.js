@@ -3,7 +3,7 @@
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker
-      .register("./service-worker.js")
+      .register("./workbox.js")
       .then(function() {
         console.log("Pendaftaran ServiceWorker berhasil");
       })
